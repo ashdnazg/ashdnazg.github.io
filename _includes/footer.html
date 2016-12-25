@@ -1,0 +1,19 @@
+<footer>
+  <hr class="slender">
+  <ul class="footer-links">
+  {% if site.github_username %}
+    <li>
+      {% include icon-github.html username=site.github_username %}
+    </li>
+  {% endif %}
+    {% for entry in site.data.social %}
+      <li>
+        <a href="{{ entry.link }}"><span class="{{ entry.icon }}"></span></a>
+      </li>
+    {% endfor %}
+  </ul>
+<div class="credits">
+<span>&copy; {{ site.time | date: '%Y' }} &nbsp;&nbsp;{{site.author }}.</span>
+<span>Powered by <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a></span>
+</div>
+</footer>

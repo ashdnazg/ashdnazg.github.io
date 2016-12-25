@@ -1,0 +1,12 @@
+<h3>
+{% if include.link %}
+<a href="//{{ include.link }}" class="caption">
+{% endif %}
+{{ include.name }}
+{% if include.link %}
+</a>
+ {% endif %}
+{% if include.github %}
+<a href="//github.com/{{ include.github }}" class="icon-github">{% include icon-github.svg %}</a>
+{% endif %}
+</h3>
