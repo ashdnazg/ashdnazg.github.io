@@ -33,7 +33,7 @@ You play the odd person who delights in running into football games with no clot
 The game won 1st place in the Humour category.
 
 {% include project-github.html name="LD29 - Leak" link="http://ludumdare.com/compo/ludum-dare-29/?action=preview&uid=21623" github="ashdnazg/ld29" %}
-Some sort of a submarine simulator, where you control aמ ADHD crew by walking into rooms and shouting orders. It was barely (read: not) completed on time so wasn't much fun.
+Some sort of a submarine simulator, where you control an ADHD crew by walking into rooms and shouting orders. It was barely (read: not) completed on time so wasn't much fun.
 
 {% include project-github.html name="LD30 - Ferryman" link="http://ludumdare.com/compo/ludum-dare-30/?action=preview&uid=21623" github="ashdnazg/ld30" %}
 You play the ferryman over the river styx, ferrying the souls to the other side. You buy boats, orcas and titanics to help you deal with the ever-growing number of deaths.
