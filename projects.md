@@ -15,7 +15,7 @@ Earlier, I've been a developer in the team of [Spring: 1944](https://github.com/
 ___
 
 {% include project-github.html name="Pyreshark" github="ashdnazg/pyreshark" %}
-A [Wireshark](//www.wireshark.org/) plugin providing a simple interface for writing packet dissectors in python.
+A [Wireshark](//www.wireshark.org/) plugin providing a simple interface for writing packet dissectors in python. Not a game but quite neat.
 
 ___
 
