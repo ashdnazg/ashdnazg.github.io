@@ -8,13 +8,15 @@ I currently focus on Bidirectional heuristic search.
 
 ___
 
-## Work in Progress
- * Eshed Shaham, Ariel Felner, Jeffrey S. Rosenschein<br>
- **Memory Bounded Bidirectional Search** ([Poster](assets/pub/MBBDS_poster.pdf))
-
-___
-
 ## Publications
+
+### 2018
+
+ * Eshed Shaham, Ariel Felner, Nathan R. Sturtevant, Jeffrey S. Rosenschein<br>
+ **Minimizing Node Expansions in Bidirectional Search with Consistent Heuristics**<br>
+ Proceedings of the 11th Annual Symposium on Combinatorial Search (SOCS 2018) ([PDF](assets/pub/SOCS2018MinCon.pdf))<br>
+ **Best Student Paper award**
+
 
 ### 2017
 
