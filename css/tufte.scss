@@ -352,9 +352,9 @@ nav.group a.image:hover{
 }
 
 header > nav  a{
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   font-family: $sans-font;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: $contrast-color;
   padding-top: 1.5rem;
@@ -363,9 +363,9 @@ header > nav  a{
   float: left;
   margin-top: 0;
   margin-bottom: 0;
-  padding-left: 0.15rem; // to fix the underline from letter spacing
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  padding-left: 0.1rem; // to fix the underline from letter spacing
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
   vertical-align: baseline;
 }
 
