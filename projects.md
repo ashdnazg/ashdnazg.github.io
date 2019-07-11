@@ -32,6 +32,8 @@ You play the odd person who delights in running into football games with no clot
 
 The game won 1st place in the Humour category.
 
+Ported to javascript with Emscripten! - [Streaker 2019](ld27)
+
 {% include project-github.html name="LD29 - Leak" link="http://ludumdare.com/compo/ludum-dare-29/?action=preview&uid=21623" github="ashdnazg/ld29" %}
 Some sort of a submarine simulator, where you control an ADHD crew by walking into rooms and shouting orders. It was barely (read: not) completed on time so wasn't much fun.
 
@@ -58,6 +60,12 @@ A dlalogue simulator where you convince your friends that one of them is a dange
 Contained between 4 and 5 minutes of voice acting.
 
 Thanks to the lessons learnt in the previous jam, the game reached 3rd place in the Humour category.
+
+{% include project-github.html name="LD38 - Of Course I Remember You!" link="https://ldjam.com/events/ludum-dare/38/of-course-i-remember-you" github="ashdnazg/LD38" %}
+Created [together](//github.com/GuyAdler) [with](//github.com/talyyy) [the](github.com/Jack-Dandy) [gang](github.com/AnastasiaLogi).
+In the game you are interrupted on your way to the toilet by people from your past and you must recall in what circumstances you met them for them to leave.
+
+The mechanics are slightly unique and slightly cumbersome but the result was somewhat amusing and we reached 12th place in the Humour caregory.
 
 ___
 
