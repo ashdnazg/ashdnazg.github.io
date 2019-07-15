@@ -7,6 +7,8 @@ order: 0
 
   <ul class="content-listing ">
     {% for post in site.posts %}
+      {% if post.visible== 1  %}
+
         <li class="listing">
           <hr class="slender">
           <a href="{{ post.url | prepend: site.baseurl }}"><h3 class="contrast">{{ post.title }}</h3></a>
@@ -17,5 +19,6 @@ order: 0
             <a href="{{ post.url }}">Read more →</a>
           {% endif %}
         </li>
+      {% endif %}
     {% endfor %}
   </ul>

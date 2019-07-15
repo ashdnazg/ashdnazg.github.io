@@ -1,0 +1,10 @@
+<figure>
+{% if include.src contains "http" %}
+<img src='{{ include.src }}'/>
+{% else %}
+<img src='{{ include.src | relative_url }}'/>
+{% endif %}
+{% if include.caption %}
+<figcaption>{{ include.caption }}</figcaption>
+{% endif %}
+</figure>

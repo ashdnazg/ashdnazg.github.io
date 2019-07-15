@@ -8,7 +8,7 @@ order: 10
 
 A powerful 3D Real-Time-Strategy game engine.
 
-I've been a core engine developer since 2015, mostly working on simulation and performance optimisation.
+I've been a core engine developer since 2015, mostly working on simulation, serialisation and performance optimisation.
 
 Earlier, I've been a developer in the team of [Spring: 1944](https://github.com/spring1944/spring1944).
 
