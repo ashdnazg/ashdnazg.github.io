@@ -59,7 +59,7 @@ In our case, since MARS implements Spring's lua API which mostly looks like `Spr
 {% include image.html src='assets/img/violation/notfound.png' caption="Oh dear..." %}
 
 How could this be? We know for sure that the game uses these strings.<br/>
-A voice in the back of your head, the executable might be [packed](https://en.wikipedia.org/wiki/Executable_compression)!<br/>
+A voice in the back of your head has a suggestion: The executable might be [packed](https://en.wikipedia.org/wiki/Executable_compression)!<br/>
 But why would someone want to shave a few MB off of an executable when it downloads a few dozen more every single time it starts?
 Might it be that they wanted to hide something? But let us not rush into conclusions which will present themselves in due time on their own accord.
 
@@ -437,6 +437,7 @@ To see what differences exist, we can compare Spring's method ([reference](https
 * Partition the map into a grid of squares (quads in Spring jargon).
 * For each square keep a list of units in that square.
 * When queried about a map rectangle, check which squares intersect with the given rectangle and return all units within them.
+
 But there are also implementation differences:
 * The square size (Spring: [128](https://github.com/spring/spring/blob/96.0/rts/Sim/Misc/QuadField.h#L129), 0AD: [20](https://trac.wildfiregames.com/browser/ps/trunk/source/simulation2/helpers/Spatial.h?rev=18987#L368), OpenRA: [1024](https://github.com/OpenRA/OpenRA/blob/release-20190314/OpenRA.Mods.Common/Traits/World/ActorMap.cs#L539)). Obviously that also depends on the scale of the game, but having an identical size should raise an eyebrow or two.
 * The method of iterating over the squares. Both OpenRA and 0AD go with the straightforward way of calculating the max. and min. row and column of squares intersecting the rectangle, then doing a triple loop over row/col/unit. Spring (for some arcane reason) calculates the max. and min. row and column just the same, but instead of doing a triple loop, it does two double loops. In the first it iterates over row/col and populates a list of squares. In the second it iterates over \<squares_in_list\>/units.
