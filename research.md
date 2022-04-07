@@ -4,11 +4,18 @@ layout: page
 order: 15
 ---
 
-I currently focus on Bidirectional heuristic search.
+In my research I focused on Bidirectional heuristic search.
 
 ___
 
 ## Publications
+
+
+### 2019
+
+ * Eshed Shaham, Ariel Felner, Nathan R. Sturtevant, Jeffrey S. Rosenschein<br>
+ **Optimally Efficient Bidirectional Search**<br>
+ Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence (IJCAI-19) ([PDF](assets/pub/IJCAI19Opt.pdf))<br>
 
 ### 2018
 

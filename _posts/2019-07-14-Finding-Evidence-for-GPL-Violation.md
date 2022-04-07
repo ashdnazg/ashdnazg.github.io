@@ -2,7 +2,7 @@
 layout: post
 title:  "Finding Evidence for GPL Violation with Ghidra and Friends"
 date:   2019-07-14
-visible: 0
+visible: 1
 ---
 
 Let's say you've worked a few years on an open source project released under the [GNU General Public License (GPL)](https://www.gnu.org/licenses/quick-guide-gplv3.html)
@@ -14,7 +14,7 @@ This post is somewhere between a write-up and a tutorial. Hopefully it is intere
 
 Hang on to your trousers, we're going in!
 
-<!---excerpt-break-->
+<!--more-->
 
 ## Ingredients
 

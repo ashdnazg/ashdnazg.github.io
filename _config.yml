@@ -20,5 +20,3 @@ page:
 editor: gvim
 git:
   branch: master
-plugins:
-  - jekyll-read-more

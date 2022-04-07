@@ -13,10 +13,11 @@ order: 0
           <hr class="slender">
           <a href="{{ post.url | prepend: site.baseurl }}"><h3 class="contrast">{{ post.title }}</h3></a>
           <br><span class="smaller">{{ post.date | date: "%B %-d, %Y" }}</span>  <br/>
-          <div>{{ post.content | get_post_excerpt }}</div>
-          {% assign has_excerpt = post.content | post_contains_excerpt_tag %}
-          {% if has_excerpt %}
-            <a href="{{ post.url }}">Read more →</a>
+          <p class="excerpt">
+            {{ post.excerpt }}
+          </p>
+          {% if post.content.size > post.excerpt.size %}
+          <p><a href="{{ post.url }}">Read more →</a></p>
           {% endif %}
         </li>
       {% endif %}
