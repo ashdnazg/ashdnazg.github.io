@@ -11,6 +11,11 @@ $spacing-unit:     30px;
     @extend %vertical-rhythm;
     -moz-tab-size: 4;
     tab-size: 4;
+    width: 95%;
+}
+
+pre.highlight {
+    width: 100%;
 }
 
 .highlight .hll { background-color: #ffffcc }
