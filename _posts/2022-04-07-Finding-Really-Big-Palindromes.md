@@ -20,9 +20,15 @@ Time to find even bigger palindromes!
 
 ## Method
 
-For quickly iterating over algorithms I've used python, only switching to a more performant language (Rust) when the algorithm stabilised. It is tempting to do all kinds of low level optimisations, but these make the code more complex and have a far lower benefit than improving the algorithm. In this problem - working less is orders of magnitude better than working faster.
+For quickly iterating over algorithms I used python, only switching to a more performant language (Rust) when the algorithm stabilised. It is tempting to do all kinds of low level optimisations, but these make the code more complex and have a far lower benefit than improving the algorithm. In this problem, working less is orders of magnitude more efficient than working faster.
 
 In order to compare the performance of different algorithms I let them run for 10 minutes and recorded when each palindrome was found. The results are then plotted on a graph with logarithmic scales (logarithm of the number found as function of logarithm of the time it took until it was found).
+
+While a brief glance at the [list of known palindromes](https://oeis.org/A007632/b007632.txt) gives the impression that they grow exponentially, we can also show that with some back-of-the-envelope math and hand-waving. Feel free to skip to the next section if you wish, this won't be in the test.
+
+The probability of a number $$k$$ to be a palindrome is the chance of its left half being equal to its right half. Each of the halves have roughly $$\sqrt{k}$$ possible values, and for each value of the left half there's only one value of the right half that is equal to it. This means that the probability of the two being equal is roughly $$1/\sqrt{k}$$. Note that the above is independent of base.
+
+Assuming (what is definitely not true, but we'll do it anyway) that the probability of being a palindrome in base 10 and the probability of being a plaindrome in base 2  are independent, the probability of both being true is simply $$1/k$$. According to this, the number of palindromes that are smaller or equal to some number $$n$$ would be $$\sum_{k = 0}^{n}1/k$$. This is the sum of the [harmonic series](https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)), which increases like $$\ln{n}$$. If the palindrom's index behaves like the logarithm of the number, the number behaves like the exponent of the index.
 
 ## Naive approach
 
@@ -43,6 +49,8 @@ def main():
 ```
 
 <<<<add results>>>>
+
+In 10 minutes, the biggest palindrome found by the naive algorithm is the 31st one, 939474939. This is not very interesting without any comparison, but there's one interesting detail in the plot. The slope of our trendline is 1, which is hardly surprising, as our algorithm is clearly linear - if we would run it for twice the time, we would find palindromes twice as big (the actual number, not the length).
 
 ## Naive²
 
@@ -68,6 +76,11 @@ def main():
 
 <<<<add results>>>>
 
+The results here are far less organised, since the algorithm interleaves the search for adjacent odd and even lengths.
+In 10 minutes, the biggest palindrome found by this algorithm is the 63rd one, 313558153351855313, but due to the nature of the algorithm, not all smaller palindromes were found. The biggest palindrome found without gaps is the 57th, 18279440804497281.
+
+This algorithm has found roughly twice as many palindromes as the naive one and the slope of its trendline is approximately 2. This is because we're only checking a square root of all numbers, making our algorithm quadratic, and $$\log{n^2}=2\log{n}$$.
+
 ## Pruning
 
 That was a significant improvement, but obviously we want to be even faster, which means doing even less work. For this we are going to remodel the problem as a series of tree searches. Each such search is only looking for palindromes of a given decimal length.
@@ -76,7 +89,7 @@ In the tree, the root is empty and children are created by adding a digit on the
 
 Notice that the $$n$$-th layer of this tree (staring with the root on layer 0) contains all the numbers of decimal length $$n$$.
 
-In the search for a palindrome of decimal length 6, we can do a depth first search up to a depth of 3 to generate all 3-decimal-digit numbers, and from them all 6-decimal-digit palindromes. The same process can be done for any other length $$n$$, by going up to depth $$\lceil \frac{n}{2} \rceil$$.
+In the search for a palindrome of decimal length 6, we can do a depth first search up to a depth of 3 to generate all 3-decimal-digit numbers, and from them all 6-decimal-digit palindromes. The same process can be done for any other length $$n$$, by going up to depth $$\lceil n/2 \rceil$$.
 
 This search can be implemented using recursion in the following way:
 
@@ -118,6 +131,8 @@ to:
 ```
 
 <<<<add results>>>>
+
+In 10 minutes, the biggest palindrome found by this algorithm is the 62nd one, 161206152251602161. That's arguably better than the previous version, but it's hardly significant. The slope of the new trendline is also still 2. The reason for this is that we've only pruned half of the numbers and $$n^2/2$$ is still quadratic. In order to get a real improvement we have to prune more, way more.
 
 ## Pruning more
 
@@ -164,6 +179,40 @@ def is_pruned(decimal_digits, decimal_length):
 
 ## Extra Pruning
 
-Our pruning method uses our knowledge of the least significant bits. This time, let's look at the most significant bits.
+Currently we are pruning according to our knowledge of the least significant bits. This time, let's look at the most significant bits.
 
-In the example, we deduced that any palindrome we might generate
+Let's say we are searching for a palindrome with a decimal length of 9, and our search has arrived to the node 755. Our decimal range is [755000557, 755999557] = [101101000000000110010011101101<sub>b</sub>, 101101000011111010001101000101<sub>b</sub>]. If we pay attention to the binary representation, we can notice that the two bounds share the 10 most significant bits - 1011010000, therefore all numbers in that range start with the same bits.
+
+If any binary palindrome lies in this range, its 10 least significant bits must be these same bits, but in reverse order, so we know it would look like this: 1011010000??????????0000101101 where "?" represents unknown bits.
+
+Now let's subtract the lower decimal bound from this hypothetical palindrome in both bases:
+```
+_ 1011010000??????????0000101101       _ 755???557       _ hypothetical palindrome
+  101101000000000110010011101101         755000557             lower_decimal_bound
+  0000000000??????????1101000000            ???000                          result
+```
+These are the exact same calculations, just in different bases, therefore both results should represent the same number.
+There are 3 unknown decimal digits, but we know that the left one and the right one are equal since they are the centre digits of a palindrome. In total this adds up to 10x10=100 possible numbers, and if we go through all of them we would notice that none end with the bits 1101000000.
+
+If the bottom lines in our calculation are not equal, we've reached a contradiction. As before, the conclusion is that no binary-decimal palindrome lies under the node 755, and we can prune that entire subtree.
+
+The key insight is that the 100 possibilities for ???000 are independent of the node 755. They are the same for every node where only two digits are left to be chosen. That means we could create a lookup table of the least significant bits of these numbers before starting the search and reuse it throughout the search for a 9 decimal digits palindrome.
+
+In later searches with more decimal digits it will be useful to create tables of sizes 1000, 10000, etc. for when 3, 4 or more digits respectively are left to be chosen.
+
+In python this translates into another pruning function:
+
+```python
+def is_pruned_by_table(min_decimal_palindrome, max_decimal_palindrome, lookup_table):
+    nonshared_bits_length = (max_decimal_palindrome ^ min_decimal_palindrome).bit_length()
+    shared_bit_prefix = bin(min_decimal_palindrome >> nonshared_bits_length)[2:]
+    hypothetical_suffix = int(shared_bit_prefix[::-1], 2)
+    subtraction_suffix = (hypothetical_suffix - min_decimal_palindrome) % (1 << len(shared_bit_prefix))
+
+    return not is_in_table(subtraction_suffix, len(shared_bit_prefix), lookup_table)
+```
+
+Implementing the table in a compact way that still keeps `is_in_table` relatively efficient is not trivial, but I won't explain it in this post, as it's already long enough.
+
+
+<<<<add results>>>>
