@@ -1,8 +1,8 @@
-<figure>
+<figure style="text-align: center;">
 {% if include.src contains "http" %}
-<img src='{{ include.src }}'/>
+<img src='{{ include.src }}' style="display: block;margin-left: auto;margin-right: auto;"/>
 {% else %}
-<img src='{{ include.src | relative_url }}'/>
+<img src='{{ include.src | relative_url }}' style="display: block;margin-left: auto;margin-right: auto;"/>
 {% endif %}
 {% if include.caption %}
 <figcaption>{{ include.caption }}</figcaption>

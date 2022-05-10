@@ -1,7 +1,7 @@
 ---
 title: About
 layout: page
-order: 20
+permalink: "about.html"
 ---
 
 I am Eshed, I may also be found under the alias ashdnazg (or due to backward compatibility reasons, hokomoko).

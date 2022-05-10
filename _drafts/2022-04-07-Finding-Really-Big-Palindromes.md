@@ -96,8 +96,8 @@ This search can be implemented using recursion in the following way:
 ```python
 def find_palindromes(current_digits, decimal_length):
     if len(current_digits) * 2 >= decimal_length:
-        digits_remaining = decimal_length - len(current_digits)
-        decimal_palindrome = int(current_digits[:digits_remaining] + current_digits[::-1])
+        left_half = current_digits[:decimal_length - len(current_digits)]
+        decimal_palindrome = int(left_half + current_digits[::-1])
         check_if_binary_palindrome(decimal_palindrome)
         return
 
@@ -157,9 +157,9 @@ In python, it looks like this:
 
 ```python
 def is_pruned(decimal_digits, decimal_length):
-    changing_decimal_length = decimal_length - 2 * len(decimal_digits)
-    min_decimal_palindrome = int(decimal_digits + "0" * changing_decimal_length + decimal_digits[::-1])
-    max_decimal_palindrome = int(decimal_digits + "9" * changing_decimal_length + decimal_digits[::-1])
+    middle_decimal_length = decimal_length - 2 * len(decimal_digits)
+    min_decimal_palindrome = int(decimal_digits + "0" * middle_decimal_length + decimal_digits[::-1])
+    max_decimal_palindrome = int(decimal_digits + "9" * middle_decimal_length + decimal_digits[::-1])
 
     binary_length = min_decimal_palindrome.bit_length()
     if max_decimal_palindrome.bit_length() != binary_length:
@@ -167,9 +167,9 @@ def is_pruned(decimal_digits, decimal_length):
 
     binary_digits = bin(min_decimal_palindrome)[-len(decimal_digits):]
 
-    changing_binary_length = binary_length - 2 * len(binary_digits)
-    min_binary_palindrome = int(binary_digits[::-1] + "0" * changing_binary_length + binary_digits, 2)
-    max_binary_palindrome = int(binary_digits[::-1] + "1" * changing_binary_length + binary_digits, 2)
+    middle_binary_length = binary_length - 2 * len(binary_digits)
+    min_binary_palindrome = int(binary_digits[::-1] + "0" * middle_binary_length + binary_digits, 2)
+    max_binary_palindrome = int(binary_digits[::-1] + "1" * middle_binary_length + binary_digits, 2)
 
     return min_binary_palindrome > max_decimal_palindrome or max_binary_palindrome < min_decimal_palindrome
 ```
@@ -187,9 +187,9 @@ If any binary palindrome lies in this range, its 10 least significant bits must 
 
 Now let's subtract the lower decimal bound from this hypothetical palindrome in both bases:
 ```
-_ 1011010000??????????0000101101       _ 755???557       _ hypothetical palindrome
-  101101000000000110010011101101         755000557             lower_decimal_bound
-  0000000000??????????1101000000            ???000                          result
+_ 1011010000??????????0000101101     _ 755???557     _ hypothetical palindrome
+  101101000000000110010011101101       755000557           lower_decimal_bound
+  0000000000??????????1101000000          ???000                        result
 ```
 These are the exact same calculations, just in different bases, therefore both results should represent the same number.
 There are 3 unknown decimal digits, but we know that the left one and the right one are equal since they are the centre digits of a palindrome. In total this adds up to 10x10=100 possible numbers, and if we go through all of them we would notice that none end with the bits 1101000000.

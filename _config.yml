@@ -1,14 +1,15 @@
 baseurl:
 title: Eshed Shaham
 author: Eshed Shaham
-simple_search: http://google.com/search
+email: ashdnazg@gmail.com
 description: Ramblings on code and life
 name: ashdnazg
 github_username: ashdnazg
+linkedin_username: eshed-shaham
 markdown: kramdown
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+theme: minima
 permalink: /articles/:short_year/:title
-timezone: America/New_York
 excerpt_separator: <!--more-->  # you can specify your own separator, of course.
 exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'UploadToGithub.Rakefile', 'README.md']
 post:
@@ -17,6 +18,5 @@ post:
 page:
   template: _page.txt
   extension: md
-editor: gvim
 git:
   branch: master

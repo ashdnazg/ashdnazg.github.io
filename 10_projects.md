@@ -1,7 +1,7 @@
 ---
 title: Projects
 layout: page
-order: 10
+permalink: "projects.html"
 ---
 
 {% include project-github.html name="Spring RTS" link="https://springrts.com" github="spring/spring" %}
@@ -47,7 +47,7 @@ The game was ok-ish but had amusing events such as demons operating a racket on 
 Created together with the [SpringCabal](https://github.com/SpringCabal), this is a puzzle/action game using the Spring engine.
 My work was mostly on [music](assets/music/gravitas.ogg) and sound effects.
 
-{% include project-github.html name="LD33 - Area 17" link="https://web.archive.org/web/20210420112638/http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=52862" %}
+{% include project-github.html name="LD33 - Area 17" link="https://web.archive.org/web/20210420112638/http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=52862" github="SpringCabal/Area-17" %}
 Created together with the [SpringCabal](https://github.com/SpringCabal), this is a silly action game using the Spring engine.
 In the game you fly around in a UFO wreaking havoc and hoovering humans for upgrades. My work was on [music](assets/music/area17.ogg), some coding and some 2D art.
 

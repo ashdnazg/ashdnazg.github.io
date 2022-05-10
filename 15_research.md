@@ -1,7 +1,7 @@
 ---
 title: Research
 layout: page
-order: 15
+permalink: "research.html"
 ---
 
 In my research I focused on Bidirectional heuristic search.
