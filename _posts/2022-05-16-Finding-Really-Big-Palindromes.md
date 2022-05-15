@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "Finding Binary & Decimal Palindromes"
-date:   2022-05-16
-visible: 0
+date:   2022-05-15
+visible: 1
 usemathjax: 1
 ---
 
@@ -271,7 +271,7 @@ Finally, it is time to optimise. We rewrite the algorithm in Rust, stop using st
 * Exponent of equation: 4.63
 * ETA to new palindromes: An hour and 50 minutes
 
-Indeed a 100-fold increase in speed, but the lower exponent shows the decreasing efficiency of the algorithm due to the inability to make big-enough tables.
+While the increase in speed is ludicrous, the lower exponent shows the decreasing efficiency of the algorithm due to the inability to make big-enough tables.
 
 Seems like we're ready!
 
