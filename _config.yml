@@ -4,9 +4,14 @@ author: Eshed Shaham
 email: ashdnazg@gmail.com
 description: Ramblings on code and life
 name: ashdnazg
-github_username: ashdnazg
-linkedin_username: eshed-shaham
-twitter_username: ashdnazg
+minima:
+  social_links:
+    github: jekyllrb
+    linkedin: eshed-shaham
+    mastodon:
+     - username: ashdnazg
+       instance: fosstodon.org
+
 markdown: kramdown
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 theme: minima
