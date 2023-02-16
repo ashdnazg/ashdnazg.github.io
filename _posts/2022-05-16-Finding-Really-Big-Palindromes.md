@@ -218,7 +218,7 @@ If any binary palindrome lies in this range, its 10 least significant bits must 
 
 Now let's subtract the lower decimal bound from this hypothetical palindrome in both bases (we will soon see why):
 ```
-_ 1011010000??????????0000101101     _ 755???557     _ hypothetical palindrome
+_ 1011010000??????????0000101101     _ 755???557     _ hypothetical_palindrome
   101101000000000110010011101101       755000557           lower_decimal_bound
   0000000000??????????1101000000          ???000                        result
 ```
