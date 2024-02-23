@@ -16,6 +16,8 @@ That's a tad over my life expectancy, but arguably reachable. After that, the nu
 
 Life is short, let's spend what little we have on finding even bigger palindromes!
 
+<!--more-->
+
 ## Method
 
 Naturally, I didn't know which algorithm would be the most effective before running any code. In order to quickly iterate over algorithm prototypes, I used python and only switched to a more performant language (Rust) and optimised after the algorithm stabilised. It is tempting to do all kinds of low-level optimisations as you go, but these make the code more complex and have a far lower benefit than improving the algorithm, since in this problem, working less is orders of magnitude more efficient than working faster.
