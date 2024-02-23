@@ -12,7 +12,7 @@ OMG, I thought to myself, 33 is a palindrome in both bases! I immediately checke
 
 99
 
-That's a tad over my life expectancy, but arguably reachable. After that, the numbers get big quite fast. Exponentially fast. The [On-Line Encyclopedia of Integer Sequences](https://oeis.org/) has [an entry](https://oeis.org/A007632) for the sequence of these numbers, with a list of the [147 known elements](https://oeis.org/A007632/b007632.txt). The largest known number is 9335388324586156026843333486206516854238835339 with 46 decimal and 153 binary digits. That's quite large indeed.
+That's a tad over my life expectancy, but arguably reachable. After that, the numbers get big quite fast. Exponentially fast. The [On-Line Encyclopedia of Integer Sequences](https://oeis.org/) has [an entry](https://oeis.org/A007632) for the sequence of these numbers, with a list of the [147 known elements](https://oeis.org/A007632/b007632.txt) (at the time of writing this post). The largest known number is 9335388324586156026843333486206516854238835339 with 46 decimal and 153 binary digits. That's quite large indeed.
 
 Life is short, let's spend what little we have on finding even bigger palindromes!
 
@@ -313,6 +313,21 @@ Without further ado:
 175 98269568061626490790443471917434409709462616086596289
 
 ??? 1610250372237506394572456221226542754936057322730520161
+```
+
+## Update (2023)
+
+A few more numbers found with the program, including the index of the aforementioned mystery palindrome:
+
+```
+176 141608322140499819558130089980031855918994041223806141
+177 1610250372237506394572456221226542754936057322730520161
+178 5375810570128326670426378465648736240766238210750185735
+179 5500130929952642025961499398939941695202462599290310055
+180 5750352680855632597679040581850409767952365580862530575
+181 5982107767230157388234011419141104328837510327677012895
+182 7992515739300692681583388637368833851862960039375152997
+183 9794258529088310956256765905095676526590138809258524979
 ```
 
 ## Epilogue
