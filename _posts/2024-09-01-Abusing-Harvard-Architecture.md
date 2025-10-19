@@ -123,3 +123,22 @@ If the input is positive, we'll jump over the last instruction and execute only 
 
 That's half as many as in the naive version!
 
+Sure, this example is a bit contrived since we needed the input in the arbitrary address 3, but in a way, that's exactly the point. We see how having the relevant data in specific RAM addresses can help us run the _same algorithm_ more efficiently.
+
+Now let's see this principle in action in a less contrived, but more complex algorithm.
+
+## Optimising Fib(n)
+
+Our next algorithm is calculating the nth [Fibonnaci number](https://en.wikipedia.org/wiki/Fibonacci_sequence) mod 2<sup>16</sup> (since our word/register size is 16-bit). We do this by generating the whole series until reaching the nth element:
+
+```
+int previous = 1;
+int result = 0;
+while (n > 0) {
+    int temp = result;
+    result = result + previous;
+    previous = result;
+    n -= 1;
+}
+```
+
