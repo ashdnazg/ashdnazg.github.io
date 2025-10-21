@@ -1,6 +1,6 @@
 ---
 layout: anchored_post
-title:  "Abusing the Harvard Architecture of Nand2Tetris"
+title:  "Abusing the Harvard Architecture in Nand2Tetris"
 date:   2025-10-30
 visible: 0
 ---
@@ -84,6 +84,7 @@ M=-M                // Negate M
                     // index of the next instruction in the ROM
 ```
 
+
 Even in such a short code excerpt, we had to set the values of `A` 3 times.
 
 The reality is actually grimmer. Pay attention to how the jump condition checked whether `D` is greater than 0. Recall that when jumping, `A` is reserved for the jump target, therefore it cannot be used for the condition. `M` can't be used either, as it depends on `A`, and since `A` is reserved, `M` is the contents of whatever arbitrary RAM address `A` points to, which is most likely not the one you'd actually like to check.
@@ -137,7 +138,7 @@ Now let's see this principle in action with a less contrived, but more complex e
 
 Our next algorithm is calculating the nth [Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_sequence) mod 2<sup>16</sup> (since our word/register size is 16-bit). We do this by generating the whole series until reaching the nth element. Here's the algorithm in c-like pseudocode:
 
-```
+<pre style="color:blue">
 previous = 1;
 result = 0;
 while (n > 0) {
@@ -146,25 +147,25 @@ while (n > 0) {
     result = result + temp;
     n = n - 1;
 }
-```
+</pre>
 
 Note: we initialize `previous` to 1 as this would be the -1<sup>th</sup> element of the series if it were [generalised to negative indices](https://en.wikipedia.org/wiki/Generalizations_of_Fibonacci_numbers#Extension_to_negative_integers).
 
-A straightforward nand2tetris assembly implementation would be something like this (annotated with the respective pseudocode lines):
+A straightforward Nand2Tetris assembly implementation would be something like this (annotated with the respective pseudocode lines):
 
-```
+<pre>
 // The program calculates the RAM[0]th Fibonacci number
 // and writes the result into RAM[1].
 
-// previous = 1;
+<span style="color:blue">// previous = 1;</span>
 @PREVIOUS
 M=1
 
-// result = 0;
+<span style="color:blue">// result = 0;</span>
 @1
 M=0
 
-// while (n > 0) {
+<span style="color:blue">// while (n > 0) {</span>
 @0
 D=M
 @END
@@ -172,37 +173,39 @@ D;JLE
 
 (LOOP)
 
-    // temp = previous;
+    <span style="color:blue">// temp = previous;</span>
     @PREVIOUS
     D=M
     @TEMP
     M=D
 
-    // previous = result;
+    <span style="color:blue">// previous = result;</span>
     @1
     D=M
     @PREVIOUS
     M=D
 
-    // result = temp + result;
+    <span style="color:blue">// result = temp + result;</span>
     @TEMP
     D=M
     @1
     M=D+M
 
-    // n = n - 1;
+    <span style="color:blue">// n = n - 1;</span>
     @0
     MD=M-1
 
-    // }
+    <span style="color:blue">// }</span>
     @LOOP
     D;JGT
 (END)
-```
+</pre>
 
 How do we measure its performance? We run the code on all valid inputs and count the number of executed instructions in the worst case.
 
 When optimising we will focus on the body of the loop - the lines between `(LOOP)` and `(END)` - since every instruction in the loop is executed many times while the instructions outside the loop are only executed once.
+
+### Results
 
 For this implementation we have:
 * Length of loop body: <b>16</b> instructions
@@ -213,40 +216,44 @@ For this implementation we have:
 The first thing we could do to reduce the number of instructions in the loop, is reduce the work our algorithm does in every iteration.
 
 Instead of:
-```
+<pre style="color:blue">
 temp = previous;
 previous = result;
 result = result + temp;
-```
+</pre>
 We do:
-```
+<pre style="color:blue">
 result = result + previous;
 previous = result - previous;
-```
+</pre>
 which has the identical result of advancing `result` and `previous` by one element.
 
 This shrinks our loop code to:
-```
-    // result = result + previous;
+<pre>
+(LOOP)
+    <span style="color:blue">// result = result + previous;</span>
     @PREVIOUS
     D=M
     @1
     MD=M+D
 
-    // previous = result - previous;
+    <span style="color:blue">// previous = result - previous;</span>
     @PREVIOUS
     M=D-M
 
-    // n = n - 1;
+    <span style="color:blue">// n = n - 1;</span>
     @0
     MD=M-1
 
-    // }
+    <span style="color:blue">// }</span>
     @LOOP
     D;JGT
-```
+(END)
+</pre>
 
-Giving us:
+### Results
+
+We get an improvement of ~37%:
 * Length of loop body: <b>10</b> instructions
 * Worst case: <b>327678</b> executed instructions
 
@@ -255,15 +262,16 @@ The next step is to start playing with the memory layout.
 ## Abusing the Harvard Architecture II
 
 Let's look at the end of the loop:
-```
-    // n = n - 1;
+<pre>
+    <span style="color:blue">// n = n - 1;</span>
     @0
     MD=M-1
 
-    // }
+    <span style="color:blue">// }</span>
     @LOOP
     D;JGT
-```
+(END)
+</pre>
 
 We decrement `n` which is placed in the address 0 in the RAM and then if the result is greater than 0, we jump to `(LOOP)` (the beginning of the loop).
 
@@ -271,7 +279,7 @@ These two parts must be done separately, since `A` needs to be set to 0 when we 
 
 We can't move `(LOOP)` to address 0 in the RAM, since that's the start of the program, so let's move `n` to the RAM address pointed to by `LOOP`, which we will refer to as `*LOOP`. We can do this by simply copying `n` into that address before the loop starts:
 
-```
+<pre style="color:blue">
 previous = 1;
 result = 0;
 *LOOP = n;
@@ -280,46 +288,48 @@ while (*LOOP > 0) {
     previous = result - previous;
     *LOOP = *LOOP - 1;
 }
-```
+</pre>
 
 for which the assembly would be:
 
-```
-// previous = 1
+<pre>
+<span style="color:blue">// previous = 1;</span>
 @PREVIOUS
 M=1
 
-// result = 0
+<span style="color:blue">// result = 0;</span>
 @1
 M=0
 
-// *LOOP = n
+<span style="color:blue">// *LOOP = n;</span>
 @0
 D=M
 @LOOP
 M=D;
 
-// while (*LOOP > 0) {
+<span style="color:blue">// while (*LOOP > 0) {</span>
 @END
 D;JLE
 
 (LOOP)
-    // result = result + previous
+    <span style="color:blue">// result = result + previous;</span>
     @PREVIOUS
     D=M
     @1
     MD=M+D
 
-    // previous = result - previous
+    <span style="color:blue">// previous = result - previous;</span>
     @PREVIOUS
     M=D-M
 
-    // *LOOP = *LOOP - 1
-    // }
+    <span style="color:blue">// *LOOP = *LOOP - 1;</span>
+    <span style="color:blue">// }</span>
     @LOOP
     M=M-1;JGT
 (END)
-```
+</pre>
+
+### Results
 
 Once again, shrinking the loop body nets us better performance:
 * Length of loop body: <b>8</b> instructions
@@ -332,84 +342,88 @@ While a 20% improvement is not insignificant, it seems a bit underwhelming consi
 ## Register Allocation
 
 Our latest step converted this:
-```
-    // n = n - 1;
+<pre>
+    <span style="color:blue">// n = n - 1;</span>
     @0
     MD=M-1
 
-    // }
+    <span style="color:blue">// }</span>
     @LOOP
     D;JGT
-```
+(END)
+</pre>
 into that:
-```
-    // *LOOP = *LOOP - 1
-    // }
+<pre>
+    <span style="color:blue">// *LOOP = *LOOP - 1;</span>
+    <span style="color:blue">// }</span>
     @LOOP
     M=M-1;JGT
 (END)
-```
+</pre>
 
-The new code is not only shorter, it also has another quality to it - unlike the old code, it doesn't change `D`.
+The new code is not only shorter, it also has another quality to it - unlike the old code, it doesn't read `D` or change it.
 
 Thanks to that, `D` can now keep its value between iterations, allowing us to allocate it to a variable. Specifically, we're going to use it to store `previous` instead of having it in the RAM.
 Before:
-```
-    // result = result + previous
+<pre>
+(LOOP)
+    <span style="color:blue">// result = result + previous;</span>
     @PREVIOUS
     D=M
     @1
     MD=M+D
 
-    // previous = result - previous
+    <span style="color:blue">// previous = result - previous;</span>
     @PREVIOUS
     M=D-M
-```
+</pre>
 After:
-```
-    // result = result + previous
+<pre>
+(LOOP)
+    <span style="color:blue">// result = result + previous;</span>
     @1
     M=M+D
 
-    // previous = result - previous
+    <span style="color:blue">// previous = result - previous;</span>
     D=M-D
-```
+</pre>
 
 And the full code:
-```
-// result = 0
+<pre>
+<span style="color:blue">// result = 0;</span>
 @1
 M=0
 
-// *LOOP = n
+<span style="color:blue">// *LOOP = n;</span>
 @0
 D=M
 @LOOP
 M=D;
 
-// while (*LOOP > 0) {
+<span style="color:blue">// while (*LOOP > 0) {</span>
 @END
 D;JLE
 
-// previous = 1 // ** Note: This is outside the loop body **
+<span style="color:blue">// previous = 1;</span> ** Note: This is still outside the loop body **
 D=1
 
 (LOOP)
-    // result = result + previous
+    <span style="color:blue">// result = result + previous;</span>
     @1
     M=M+D
 
-    // previous = result - previous
+    <span style="color:blue">// previous = result - previous;</span>
     D=M-D
 
-    // *LOOP = *LOOP - 1
-    // }
+    <span style="color:blue">// *LOOP = *LOOP - 1;</span>
+    <span style="color:blue">// }</span>
     @LOOP
     M=M-1;JGT
 (END)
-```
+</pre>
 
-and we get:
+### Results
+Here we get:
 * Length of loop body: <b>5</b> instructions
 * Worst case: <b>163844</b> executed instructions
 
@@ -417,4 +431,23 @@ That's a whopping 50% less than the second implementation - our last version wit
 
 This last step reveals the real benefit of this trick. Without the trick, we need to use `D` whenever we have a conditional branch, forcing us to spill data into the memory, since `A` is already reserved for the jump, leaving us with no registers that we can allocate to variables.
 
-With the trick, `D` is no longer required in jumps, so the number of available registers increases from 0 to 1. This allows us more flexibility, resulting in simpler and faster code.
+With the trick, `D` is no longer required in jumps, so the number of available registers skyrockets from 0 to 1. This allows us more flexibility, and the code becomes simpler and faster.
+
+
+## Summary
+
+In total we reduced the runtime of the worst case by almost 69 percent.
+
+Neither dropping `TEMP` in favour of smarter arithmetic, nor allocating a register (`D`) to store `previous` are Nand2Tetris specific optimisations.Compilers do similar things all the time on many platforms.
+
+Storing `n` in `*LOOP`, however, could only be done on a Harvard architecture machine with separate data and instruction memory.
+
+So it looks like only one out of our three optimisations relied on the Harvard architecture, but since the last optimisation (allocating `D`) depended on the previous two, it, as well, was only made possible by the Harvard architecture abuse, albeit indirectly.
+
+## Further Optimisations
+
+Our last version is far from optimal. Even with the same algorithm, it is possible to improve performance by up to a further ~80% with [other techniques](https://en.wikipedia.org/wiki/Loop_unrolling) that might feature on a future blog post.
+
+Changing the algorithm to [one with a lower complexity](https://www.nayuki.io/page/fast-fibonacci-algorithms) might give even better results, but that would require a fast multiplication implementation.
+
+If you have any ideas or interesting techniques, feel free to contact me by Email or through [Mastodon](https://fosstodon.org/@ashdnazg)
