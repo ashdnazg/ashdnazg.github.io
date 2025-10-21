@@ -1,8 +1,8 @@
 <figure style="text-align: center;">
 {% if include.src contains "http" %}
-<img src='{{ include.src }}' style="display: block;margin-left: auto;margin-right: auto;"{% if include.alt %} alt='{{ include.alt }}'{% endif %}/>
+<img src='{{ include.src }}' style="display: block;margin-left: auto;margin-right: auto;"{% if include.alt %} title='{{ include.alt }}'{% endif %}/>
 {% else %}
-<img src='{{ include.src | relative_url }}' style="display: block;margin-left: auto;margin-right: auto;"{% if include.alt %} alt='{{ include.alt }}'{% endif %}/>
+<img src='{{ include.src | relative_url }}' style="display: block;margin-left: auto;margin-right: auto;"{% if include.alt %} title='{{ include.alt }}'{% endif %}/>
 {% endif %}
 {% if include.caption %}
 <figcaption>{{ include.caption }}</figcaption>
